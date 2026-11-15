@@ -6,7 +6,7 @@ finished jars you'd otherwise download from luckperms.net, re-hosted here so the
 tooling pulls from a repo you control instead of tracking upstream automatically.
 
 **Why**: the deploy pipeline for `NetCoreVelocity`/`NetCorePaper` already pulls jars from GitHub
-Releases (see `NetCoreVelocity`'s `deploy/ubuntu/61-fetch-github-release.sh`). Doing the same for
+Releases (see [NetCoreDeploy](https://github.com/TheTacobite/NetCoreDeploy)'s `ubuntu/61-fetch-github-release.sh`). Doing the same for
 LuckPerms means every jar the network runs comes from one consistent mechanism - and, more
 importantly, this repo only ever has the version you've deliberately chosen. You decide when to
 upgrade by pushing a new jar here; nothing pulls a newer LuckPerms release on its own. Same
@@ -32,15 +32,15 @@ To actually make this usable:
 3. Attach `LuckPerms-Velocity-5.5.59.jar` and `LuckPerms-Bukkit-5.5.59.jar` as release assets.
 4. Publish.
 
-`deploy/README.md`'s Stage 3 (in `NetCoreVelocity`) already references `v5.4.141` as a placeholder
-tag in its example commands - update that to whatever tag you actually publish here.
+NetCoreDeploy's `versions.env` pins which tag the network uses (`LUCKPERMS=`).
 
 ## Updating to a newer LuckPerms version
 
 1. Download the new `LuckPerms-Velocity-<version>.jar` / `LuckPerms-Bukkit-<version>.jar` from
    [luckperms.net/download](https://luckperms.net/download).
 2. Cut a new Release here, tagged with the new version, with those jars attached.
-3. Update the pinned tag in `NetCoreVelocity/deploy/README.md`'s Stage 3 commands to the new tag.
-4. Re-run `61-fetch-github-release.sh` on whichever host needs the update.
+3. Set `LUCKPERMS=` to the new tag in NetCoreDeploy's `versions.env` and push.
+4. Run `sudo netcore update` on Box 2 and each game server box. It updates both the Paper and
+   Velocity jars, restarting servers one at a time.
 
 Nothing here updates automatically - that's the point.
